@@ -1,38 +1,37 @@
-import csv
+import pandas as pd
 
 from classes.Cavaleiro import CavaleiroOuro
 from classes.Cavaleiro import CavaleiroBronze
+from classes.Cavaleiro import Batalha
 
 def main():
     '''
     
     '''
 
-    #definir uma lista com todos os cavaleiros de ouro
-    cavaleirosOuro = []
+    #caminho onde está localizada as informações dos Cavaleiros de Ouro
+    caminho = 'nivelDeDificuldadeDasCasas.csv'
+    df = pd.read_csv(caminho, sep=';')
+    #definir uma lista com todos os Cavaleiros de Ouro
+    cavaleirosDeOuro = [CavaleiroOuro(row['casa'], row['dificuldade']) for i, row in df.iterrows()]
 
-    #abrir o arquivo que está localizado os níveis de cada caveleiro de ouro
-    with open('nivelDeDificuldadeDasCasas.csv', mode="r") as f:
-        cavaleirosDeOuro = csv.DictReader(f, delimiter=';')
+    #print(cavaleirosDeOuro)
 
-        for linha in cavaleirosDeOuro:
-            cavaleiro = CavaleiroOuro(linha["casa"], linha["dificuldade"])
-            #print(cavaleiro)
-            cavaleirosOuro.append(cavaleiro)
-    
+    #caminho onde está localizada todas as informações dos Cavaleiros de Bronze
+    caminho = 'poderCosmicoDosCavaleiros.csv'
+    df = pd.read_csv(caminho, sep=';')
+    #definir uma lista com todos os Cavaleiros de Bronze
+    cavaleirosDeBronze = [CavaleiroBronze(row["cavaleiro"], row["poderCosmico"], row["pontosDeEnergia"]) for i, row in df.iterrows()]
 
-    #definir uma lista com os cavaleiros de bronze
-    cavaleirosBronze = []
+    #print(cavaleirosDeBronze)
 
-    #abrir o arquivo que está localizado as informações dos cavaleiros de bronze
-    with open('poderCosmicoDosCavaleiros.csv', mode="r") as f:
-        cavaleirosDeBronze = csv.DictReader(f, delimiter=';')
-
-        for linha in cavaleirosDeBronze:
-            cavaleiro = CavaleiroBronze(linha["cavaleiro"], linha["poderCosmico"], linha["pontosDeEnergia"])
-            print(cavaleiro)
-            cavaleirosBronze.append(cavaleiro)
-
+    ''' testando se a função de tempo gasto por batalha está funcionando
+    cavaleiroOuro = cavaleirosDeOuro[0]
+    cavaleirosBronze = cavaleirosDeBronze
+    calc = Batalha()
+    print(calc.tempoGastoPorBatalha(cavaleiroOuro, cavaleirosBronze))
+    print(cavaleirosDeBronze)
+    '''
 
 if __name__ == "__main__":
     main()
