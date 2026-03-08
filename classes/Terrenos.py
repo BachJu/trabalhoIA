@@ -3,10 +3,11 @@
 #montanha = 200 min
 #plano = 1 min
 #rochoso = 5 min
+#valores de INICIO e DESTINO servem apenas como flag, não possuem valor real
 class Terrenos(int):
-    NENHUM = 0
+    NENHUM = -99
     MONTANHA = 200
     PLANO = 1
     ROCHOSO = 5
-    INICIO = -10
-    DESTINO = -15
+    INICIO = 0
+    DESTINO = 13
