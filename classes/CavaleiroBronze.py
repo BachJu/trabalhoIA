@@ -39,20 +39,21 @@ class CavaleiroBronze:
     
     def gastarPontosDeEnergia(self):
         self.pontosDeEnergia -= 1
+        '''
         try:
             self.atualizarCsv()
         except:
             print("Não foi possivel atualizar o csv")
+        '''
     
+    '''
     def atualizarCsv(self):
-        '''
-        Função responsável de atualizar o csv quando for gasto pontos de energia
-        '''
         caminho = '/csv/poderCosmicoDosCavaleiros.csv'
-        
+
         df = pd.read_csv(caminho, sep=';')
         df.loc[df['index'] == self.index, 'pontosDeEnergia'] = self.pontosDeEnergia
         df.to_csv(caminho, sep=';', index=False)
+    '''
     
     #para quando for imprimir só um objeto
     def __str__(self):

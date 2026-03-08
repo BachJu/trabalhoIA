@@ -12,10 +12,10 @@ def main():
     print(cavaleirosDeBronze)
     '''
 
-    cavaleiroOuro = CavaleiroOuro.alocarCavaleirosDeOuroCsvParaLista('csv/niveldeDificuldadeDasCasas.csv')
+    cavaleiroOuro = CavaleiroOuro.alocarCavaleirosDeOuroCsvParaLista('csv/cavaleirosDeOuro.csv')
     print(cavaleiroOuro)
 
-    cavaleiroBronze = CavaleiroBronze.alocarCavaleirosDeBronzeCsvParaLista('csv/poderCosmicoDosCavaleiros.csv')
+    cavaleiroBronze = CavaleiroBronze.alocarCavaleirosDeBronzeCsvParaLista('csv/cavaleirosDeBronze.csv')
     print(cavaleiroBronze)
 
     cavaleirosBronze = [cavaleiroBronze[0], cavaleiroBronze[1]]

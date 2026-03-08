@@ -22,6 +22,11 @@ class Batalha:
         self.tempo = deficuldadeDaCasa / somaDoPoderCosmico
 
         return self.tempo
+    
+    def heuristica():
+        '''
+        
+        '''
 
     def __str__(self):
         return f"Tempo gasto em batalha -> {self.tempo}"
