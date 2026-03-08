@@ -1,29 +1,8 @@
-import pandas as pd
-
-from classes.Cavaleiro import CavaleiroOuro
-from classes.Cavaleiro import CavaleiroBronze
-from classes.Cavaleiro import Batalha
+from classes.CavaleiroBronze import CavaleiroBronze
+from classes.CavaleiroOuro import CavaleiroOuro
+from classes.Batalha import Batalha
 
 def main():
-    '''
-    
-    '''
-
-    #caminho onde está localizada as informações dos Cavaleiros de Ouro
-    caminho = 'nivelDeDificuldadeDasCasas.csv'
-    df = pd.read_csv(caminho, sep=';')
-    #definir uma lista com todos os Cavaleiros de Ouro
-    cavaleirosDeOuro = [CavaleiroOuro(row['casa'], row['dificuldade']) for i, row in df.iterrows()]
-
-    #print(cavaleirosDeOuro)
-
-    #caminho onde está localizada todas as informações dos Cavaleiros de Bronze
-    caminho = 'poderCosmicoDosCavaleiros.csv'
-    df = pd.read_csv(caminho, sep=';')
-    #definir uma lista com todos os Cavaleiros de Bronze
-    cavaleirosDeBronze = [CavaleiroBronze(row["cavaleiro"], row["poderCosmico"], row["pontosDeEnergia"]) for i, row in df.iterrows()]
-
-    #print(cavaleirosDeBronze)
 
     ''' testando se a função de tempo gasto por batalha está funcionando
     cavaleiroOuro = cavaleirosDeOuro[0]
@@ -32,6 +11,22 @@ def main():
     print(calc.tempoGastoPorBatalha(cavaleiroOuro, cavaleirosBronze))
     print(cavaleirosDeBronze)
     '''
+
+    cavaleiroOuro = CavaleiroOuro.alocarCavaleirosDeOuroCsvParaLista('csv/niveldeDificuldadeDasCasas.csv')
+    print(cavaleiroOuro)
+
+    cavaleiroBronze = CavaleiroBronze.alocarCavaleirosDeBronzeCsvParaLista('csv/poderCosmicoDosCavaleiros.csv')
+    print(cavaleiroBronze)
+
+    cavaleirosBronze = [cavaleiroBronze[0], cavaleiroBronze[1]]
+
+    batalha = Batalha(0, cavaleiroOuro=cavaleiroOuro[0], cavaleiroBronze=cavaleirosBronze)
+    print(batalha.cavaleiroOuro)
+    print(batalha.cavaleiroBronze)
+    batalha.tempoGastoPorBatalha()
+
+    print(batalha.tempo)
+    print(cavaleiroBronze)
 
 if __name__ == "__main__":
     main()

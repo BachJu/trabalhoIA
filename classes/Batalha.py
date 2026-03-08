@@ -1,22 +1,23 @@
-from CavaleiroBronze import *
-from CavaleiroOuro import *
+from .CavaleiroBronze import *
+from .CavaleiroOuro import *
 
 class Batalha:
     cavaleiroOuro: CavaleiroOuro
     cavaleiroBronze: list[CavaleiroBronze]
 
-    def __init__(self, cavaleiroOuro, cavaleiroBronze=None):
+    def __init__(self, tempo, cavaleiroOuro, cavaleiroBronze):
+        self.tempo = tempo
         self.cavaleiroOuro = cavaleiroOuro
         self.cavaleiroBronze = cavaleiroBronze
 
-    def tempoGastoPorBatalha(self, cavaleiroOuro, cavaleirosBronze):
+    def tempoGastoPorBatalha(self):
         somaDoPoderCosmico = 0
 
-        for cavaleiro in cavaleirosBronze:
+        for cavaleiro in self.cavaleiroBronze:
             somaDoPoderCosmico += cavaleiro.poderCosmico
             cavaleiro.gastarPontosDeEnergia()
         
-        deficuldadeDaCasa = cavaleiroOuro.dificuldade
+        deficuldadeDaCasa = self.cavaleiroOuro.dificuldade
 
         self.tempo = deficuldadeDaCasa / somaDoPoderCosmico
 
