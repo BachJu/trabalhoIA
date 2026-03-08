@@ -55,20 +55,3 @@ class Matriz:
                 soma +=1
         if soma != 1:
             raise ValueError("É preciso um único destino!")
-
-#objeto matriz para testes das funções e da classe em geral  
-matriz = Matriz(
-    quadrados=(
-        Quadrado(0, 0, 0, Terrenos.NENHUM),
-        Quadrado(1, 0, 1, Terrenos.PLANO),
-        Quadrado(2, 0, 2, Terrenos.ROCHOSO),
-        Quadrado(3, 0, 3, Terrenos.PLANO),
-        Quadrado(4, 1, 0, Terrenos.MONTANHA),
-        Quadrado(5, 1, 1, Terrenos.PLANO),
-        Quadrado(6, 1, 2, Terrenos.INICIO),
-        Quadrado(7, 1, 3, Terrenos.DESTINO)
-    )
-)
-
-quadrado = matriz.entrada()
-print(quadrado.index)

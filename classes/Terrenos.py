@@ -10,4 +10,4 @@ class Terrenos(int):
     PLANO = 1
     ROCHOSO = 5
     INICIO = 0
-    DESTINO = 13
+    DESTINO = -1

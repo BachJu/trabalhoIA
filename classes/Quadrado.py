@@ -12,9 +12,11 @@ class Quadrado:
     linha: int
     coluna: int
     terreno: Terrenos = Terrenos.NENHUM
+    visitado: False
 
     def __init__(self, index, linha, coluna, terreno):
         self.index = index
         self.linha = linha
         self.coluna = coluna
         self.terreno = terreno
+        self.visitado = False
