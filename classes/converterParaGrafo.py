@@ -1,3 +1,5 @@
+import networkx as nx
+
 from typing import TypeAlias
 
 from Quadrado import Quadrado
@@ -11,6 +13,23 @@ No: TypeAlias = Quadrado
 class Aresta:
     no1: No
     no2: No
+
+    def __init__(self, no1: No, no2: No):
+        self.no1 = no1
+        self.no2 = no2
+
+    @property
+    def peso(self):
+        return self.no2.terreno
+    
+
+
+def construir_grafo(matriz: Matriz) -> nx.Graph:
+    nos = construir_nos(matriz)
+    return nx.Graph(
+        (aresta.no1, aresta.no2, {"peso": aresta.peso})
+        for aresta in construir_arestas(matriz, nos)
+    )
 
 #conjunto de nós
 def construir_nos(matriz: Matriz) -> set[No]:
@@ -29,8 +48,8 @@ def construir_arestas(matriz: Matriz, nos: set[No]) -> set[Aresta]:
     for no_raiz in nos:
         #seguindo para a direita
         no = no_raiz
-        for x in range(no.coluna + 1, matriz.largura):
-            no = matriz.quadrados[no.linha * matriz.largura + x]
+        for x in range(no.coluna + 1, matriz.largura()):
+            no = matriz.quadrados[no.linha * matriz.largura() + x]
             #serve para não acrescentar nos cujos quadrados são vazios
             if no in nos:
                 arestas.add(Aresta(no_raiz, no))
@@ -38,8 +57,8 @@ def construir_arestas(matriz: Matriz, nos: set[No]) -> set[Aresta]:
         
         #seguindo para baixo
         no = no_raiz
-        for y in range(no.linha + 1, matriz.altura):
-            no = matriz.quadrados[y * matriz.largura + no.coluna]
+        for y in range(no.linha + 1, matriz.altura()):
+            no = matriz.quadrados[y * matriz.largura() + no.coluna]
             if no in nos:
                 arestas.add(Aresta(no_raiz, no))
                 break
@@ -61,8 +80,6 @@ matriz = Matriz(
     )
 )
 
-conjunto = construir_nos(matriz)
-print(conjunto)
 
-arestas = construir_arestas(matriz, conjunto)
-print(arestas)
+
+G = construir_grafo(matriz)
