@@ -55,3 +55,6 @@ class Matriz:
                 soma +=1
         if soma != 1:
             raise ValueError("É preciso um único destino!")
+    
+    def max_index(self):
+        return self.altura() * self.largura() - 1
