@@ -53,7 +53,7 @@ class BatalhaHeuristica:
                 tempoPorBatalha = self.batalhaPorCasa(cavaleirosSelecionadosParaBatalha, cavaleiroOuro)
                 tempoEstimadoTotal += tempoPorBatalha
 
-                cavaleirosNomes = [c.nome for c in cavaleirosSelecionadosParaBatalha]
+                cavaleirosNomes = [cavaleiro.nome for cavaleiro in cavaleirosSelecionadosParaBatalha]
 
                 batalhasDetalhadas.append({
                     'casa': cavaleiroOuro.casa,
