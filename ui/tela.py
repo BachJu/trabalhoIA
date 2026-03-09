@@ -1,1 +1,0 @@
-#para desenho da UI, imprimir as funções e etc
