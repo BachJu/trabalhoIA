@@ -1,37 +1,32 @@
-import pandas as pd
-
-from classes.Cavaleiro import CavaleiroOuro
-from classes.Cavaleiro import CavaleiroBronze
-from classes.Cavaleiro import Batalha
+from classes.CavaleiroBronze import CavaleiroBronze
+from classes.CavaleiroOuro import CavaleiroOuro
+from classes.Batalha import BatalhaHeuristica
 
 def main():
-    '''
-    
-    '''
+    cavaleirosOuro = CavaleiroOuro.alocarCavaleirosDeOuroCsvParaLista('csv/cavaleirosDeOuro.csv')
+    print(cavaleirosOuro)
+    print("\n")
 
-    #caminho onde está localizada as informações dos Cavaleiros de Ouro
-    caminho = 'nivelDeDificuldadeDasCasas.csv'
-    df = pd.read_csv(caminho, sep=';')
-    #definir uma lista com todos os Cavaleiros de Ouro
-    cavaleirosDeOuro = [CavaleiroOuro(row['casa'], row['dificuldade']) for i, row in df.iterrows()]
+    cavaleirosBronze = CavaleiroBronze.alocarCavaleirosDeBronzeCsvParaLista('csv/cavaleirosDeBronze.csv')
+    print(cavaleirosBronze)
+    print("\n")
 
-    #print(cavaleirosDeOuro)
+    ordem_fixa = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 
-    #caminho onde está localizada todas as informações dos Cavaleiros de Bronze
-    caminho = 'poderCosmicoDosCavaleiros.csv'
-    df = pd.read_csv(caminho, sep=';')
-    #definir uma lista com todos os Cavaleiros de Bronze
-    cavaleirosDeBronze = [CavaleiroBronze(row["cavaleiro"], row["poderCosmico"], row["pontosDeEnergia"]) for i, row in df.iterrows()]
+    batalha = BatalhaHeuristica(cavaleirosBronze, cavaleirosOuro, ordem_fixa)
+    tempo, batalhas = batalha.h()
+    print("-" * 30)
+    print(f"Tempo estimado total para vencer todas as batalhas: {tempo:.2f}")
+    print("-" * 30)
+    for batalha in batalhas:
+        print(f"Casa: {batalha['casa']}")
+        print(f"Cavaleiros: {', '.join(batalha['cavaleiros'])}")
+        print(f"Tempo da batalha: {batalha['tempo_batalha']:.2f}")
+        print("-" * 30)
 
-    #print(cavaleirosDeBronze)
-
-    ''' testando se a função de tempo gasto por batalha está funcionando
-    cavaleiroOuro = cavaleirosDeOuro[0]
-    cavaleirosBronze = cavaleirosDeBronze
-    calc = Batalha()
-    print(calc.tempoGastoPorBatalha(cavaleiroOuro, cavaleirosBronze))
-    print(cavaleirosDeBronze)
-    '''
+    print("\n")
+    print(cavaleirosBronze)
+    print("\n")
 
 if __name__ == "__main__":
     main()
