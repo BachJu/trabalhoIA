@@ -1,6 +1,7 @@
 from classes.CavaleiroBronze import CavaleiroBronze
 from classes.CavaleiroOuro import CavaleiroOuro
 from classes.Batalha import BatalhaHeuristica
+from classes.buscaA import *
 
 def main():
     cavaleirosOuro = CavaleiroOuro.alocarCavaleirosDeOuroCsvParaLista('csv/cavaleirosDeOuro.csv')
@@ -27,6 +28,16 @@ def main():
     print("\n")
     print(cavaleirosBronze)
     print("\n")
+    
+    #carregando a matriz
+    dados = carregar_matriz()
+
+    matr, inicio, fim, casas_lista = dados
+
+    #ao invés de utilizarmos a função, utilizamos o calculo_rotas que lida com as casas dos cavaleiros
+    custo_matriz = calculo_rotas(matr, casas_lista, inicio, fim)
+    print(f"Tempo de busca A* -> {custo_matriz} min")
 
 if __name__ == "__main__":
     main()
+

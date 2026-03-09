@@ -6,15 +6,15 @@ from tkinter import ttk
 import os
 import time
 
-matriz = 'C:\\Users\\Pichau\\Downloads\\trabalhoIA-mainNovo\\trabalhoIA-main\\csv\\matriz.csv'
+matriz = r'.\csv\matriz.csv'
 matrizleitura = pd.read_csv(matriz, sep=';', header=None)
 rows1, cols1 = matrizleitura.shape
 
-NDC = 'C:\\Users\\Pichau\\Downloads\\trabalhoIA-mainNovo\\trabalhoIA-main\\csv\\nivelDeDificuldadeDasCasas.csv'
+NDC = r'.\csv\cavaleirosDeOuro.csv'
 NDCleitura = pd.read_csv(NDC, sep=';', header=None)
 rows2, cols2 = NDCleitura.shape
 
-Cosmo = 'C:\\Users\\Pichau\\Downloads\\trabalhoIA-mainNovo\\trabalhoIA-main\\csv\\poderCosmicoDosCavaleiros.csv'
+Cosmo = r'.\csv\cavaleirosDeBronze.csv'
 Cosmoleitura = pd.read_csv(Cosmo, sep=';', header=None)
 rows3, cols3 = Cosmoleitura.shape
 
@@ -43,7 +43,7 @@ screen_height = root.winfo_screenheight()
 cell_size = 19
 root.geometry(f"{screen_width}x{screen_height}+0+0")
 
-fundo = Image.open("C:/Users/Pichau/Downloads/trabalhoIA-mainNovo/trabalhoIA-main/Imagens/Fundo.jpg")
+fundo = Image.open(r'./Imagens/Fundo.jpg')
 fundo = fundo.resize((screen_width, screen_height))
 fundoTk = ImageTk.PhotoImage(fundo)
 
