@@ -1,32 +1,32 @@
 from classes.CavaleiroBronze import CavaleiroBronze
 from classes.CavaleiroOuro import CavaleiroOuro
-from classes.Batalha import Batalha
+from classes.Batalha import BatalhaHeuristica
 
 def main():
+    cavaleirosOuro = CavaleiroOuro.alocarCavaleirosDeOuroCsvParaLista('csv/cavaleirosDeOuro.csv')
+    print(cavaleirosOuro)
+    print("\n")
 
-    ''' testando se a função de tempo gasto por batalha está funcionando
-    cavaleiroOuro = cavaleirosDeOuro[0]
-    cavaleirosBronze = cavaleirosDeBronze
-    calc = Batalha()
-    print(calc.tempoGastoPorBatalha(cavaleiroOuro, cavaleirosBronze))
-    print(cavaleirosDeBronze)
-    '''
+    cavaleirosBronze = CavaleiroBronze.alocarCavaleirosDeBronzeCsvParaLista('csv/cavaleirosDeBronze.csv')
+    print(cavaleirosBronze)
+    print("\n")
 
-    cavaleiroOuro = CavaleiroOuro.alocarCavaleirosDeOuroCsvParaLista('csv/cavaleirosDeOuro.csv')
-    print(cavaleiroOuro)
+    ordem_fixa = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 
-    cavaleiroBronze = CavaleiroBronze.alocarCavaleirosDeBronzeCsvParaLista('csv/cavaleirosDeBronze.csv')
-    print(cavaleiroBronze)
+    batalha = BatalhaHeuristica(cavaleirosBronze, cavaleirosOuro, ordem_fixa)
+    tempo, batalhas = batalha.h()
+    print("-" * 30)
+    print(f"Tempo estimado total para vencer todas as batalhas: {tempo:.2f}")
+    print("-" * 30)
+    for batalha in batalhas:
+        print(f"Casa: {batalha['casa']}")
+        print(f"Cavaleiros: {', '.join(batalha['cavaleiros'])}")
+        print(f"Tempo da batalha: {batalha['tempo_batalha']:.2f}")
+        print("-" * 30)
 
-    cavaleirosBronze = [cavaleiroBronze[0], cavaleiroBronze[1]]
-
-    batalha = Batalha(0, cavaleiroOuro=cavaleiroOuro[0], cavaleiroBronze=cavaleirosBronze)
-    print(batalha.cavaleiroOuro)
-    print(batalha.cavaleiroBronze)
-    batalha.tempoGastoPorBatalha()
-
-    print(batalha.tempo)
-    print(cavaleiroBronze)
+    print("\n")
+    print(cavaleirosBronze)
+    print("\n")
 
 if __name__ == "__main__":
     main()

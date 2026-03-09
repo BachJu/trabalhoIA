@@ -1,32 +1,64 @@
 from .CavaleiroBronze import *
 from .CavaleiroOuro import *
 
-class Batalha:
-    cavaleiroOuro: CavaleiroOuro
-    cavaleiroBronze: list[CavaleiroBronze]
+class BatalhaHeuristica:
+    def __init__(self, cavaleirosBronze, cavaleirosOuro, ordemCasas):
+        cavaleirosBronze: list[CavaleiroBronze]
+        cavaleirosOuro: list[CavaleiroOuro]
+        ordemCasas: list
 
-    def __init__(self, tempo, cavaleiroOuro, cavaleiroBronze):
-        self.tempo = tempo
-        self.cavaleiroOuro = cavaleiroOuro
-        self.cavaleiroBronze = cavaleiroBronze
+        self.cavaleirosBronze = cavaleirosBronze
+        self.cavaleirosOuro = cavaleirosOuro
+        self.ordemCasas = ordemCasas
 
-    def tempoGastoPorBatalha(self):
-        somaDoPoderCosmico = 0
+    def cavaleirosDisponiveis(self):
+        return [cavaleiro for cavaleiro in self.cavaleirosBronze if cavaleiro.pontosDeEnergia > 0]
 
-        for cavaleiro in self.cavaleiroBronze:
-            somaDoPoderCosmico += cavaleiro.poderCosmico
+    def somaPoderCosmico(self, cavaleiros):
+        return sum(cavaleiro.poderCosmico for cavaleiro in cavaleiros)
+
+    def tempoPorBatalha(self, cavaleiros_bronze, cavaleiro_ouro):
+        poderCosmicoTotal = self.somaPoderCosmico(cavaleiros_bronze)
+        tempoPorBatalha = cavaleiro_ouro.dificuldade / poderCosmicoTotal
+        return tempoPorBatalha
+
+    def batalhaPorCasa(self, cavaleirosBronze, cavaleiroOuro):
+        tempoPorBatalha = self.tempoPorBatalha(cavaleirosBronze, cavaleiroOuro)
+
+        #cavaleiros_nomes = [c.nome for c in cavaleirosBronze]
+        #print(f"Batalha na casa {cavaleiroOuro.casa}: Cavaleiros {', '.join(cavaleiros_nomes)} enfrentaram {cavaleiroOuro.casa} e o tempo foi {tempoPorBatalha:.2f}.")
+
+        for cavaleiro in cavaleirosBronze:
             cavaleiro.gastarPontosDeEnergia()
+
+        return tempoPorBatalha
+
+    def h(self):
+        cavaleirosBronzeDisponiveis = sorted(self.cavaleirosDisponiveis(), key=lambda x: x.poderCosmico, reverse=True)
+        casasOuroRestantes = sorted(self.cavaleirosOuro, key=lambda x: x.dificuldade, reverse=True)
         
-        deficuldadeDaCasa = self.cavaleiroOuro.dificuldade
+        tempoEstimadoTotal = 0
+        batalhasDetalhadas = []
 
-        self.tempo = deficuldadeDaCasa / somaDoPoderCosmico
+        for casa_index in self.ordemCasas:
+            cavaleiroOuro = casasOuroRestantes[casa_index]
+            
+            cavaleirosSelecionadosParaBatalha = []
 
-        return self.tempo
-    
-    def heuristica():
-        '''
-        
-        '''
+            for cavaleiroBronze in cavaleirosBronzeDisponiveis:
+                if cavaleiroBronze.pontosDeEnergia > 0 and len(cavaleirosSelecionadosParaBatalha) < 2:
+                    cavaleirosSelecionadosParaBatalha.append(cavaleiroBronze)
+            
+            if cavaleirosSelecionadosParaBatalha:
+                tempoPorBatalha = self.batalhaPorCasa(cavaleirosSelecionadosParaBatalha, cavaleiroOuro)
+                tempoEstimadoTotal += tempoPorBatalha
 
-    def __str__(self):
-        return f"Tempo gasto em batalha -> {self.tempo}"
+                cavaleirosNomes = [c.nome for c in cavaleirosSelecionadosParaBatalha]
+
+                batalhasDetalhadas.append({
+                    'casa': cavaleiroOuro.casa,
+                    'cavaleiros': cavaleirosNomes,
+                    'tempo_batalha': tempoPorBatalha
+                })
+
+        return tempoEstimadoTotal, batalhasDetalhadas
