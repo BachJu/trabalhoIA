@@ -1,37 +1,42 @@
-import pandas as pd
+from classes.CavaleiroBronze import CavaleiroBronze
+from classes.CavaleiroOuro import CavaleiroOuro
+from classes.Batalha import BatalhaHeuristica
+from classes.buscaA import *
+import os
 
-from classes.Cavaleiro import CavaleiroOuro
-from classes.Cavaleiro import CavaleiroBronze
-from classes.Cavaleiro import Batalha
+script_dir = os.path.dirname(os.path.abspath(__file__))
 
 def main():
-    '''
-    
-    '''
+    result = ""
+    ouro_path = os.path.join(script_dir, 'csv', 'cavaleirosDeOuro.csv')
+    cavaleirosOuro = CavaleiroOuro.alocarCavaleirosDeOuroCsvParaLista(ouro_path)
 
-    #caminho onde está localizada as informações dos Cavaleiros de Ouro
-    caminho = 'nivelDeDificuldadeDasCasas.csv'
-    df = pd.read_csv(caminho, sep=';')
-    #definir uma lista com todos os Cavaleiros de Ouro
-    cavaleirosDeOuro = [CavaleiroOuro(row['casa'], row['dificuldade']) for i, row in df.iterrows()]
+    bronze_path = os.path.join(script_dir, 'csv', 'cavaleirosDeBronze.csv')
+    cavaleirosBronze = CavaleiroBronze.alocarCavaleirosDeBronzeCsvParaLista(bronze_path)
 
-    #print(cavaleirosDeOuro)
+    #carregando a matriz
+    dados = carregar_matriz()
 
-    #caminho onde está localizada todas as informações dos Cavaleiros de Bronze
-    caminho = 'poderCosmicoDosCavaleiros.csv'
-    df = pd.read_csv(caminho, sep=';')
-    #definir uma lista com todos os Cavaleiros de Bronze
-    cavaleirosDeBronze = [CavaleiroBronze(row["cavaleiro"], row["poderCosmico"], row["pontosDeEnergia"]) for i, row in df.iterrows()]
+    matr, inicio, fim, casas_lista = dados
 
-    #print(cavaleirosDeBronze)
+    #ao invés de utilizarmos a função, utilizamos o calculo_rotas que lida com as casas dos cavaleiros
+    custo_matriz, paths = calculo_rotas(matr, casas_lista, inicio, fim)
 
-    ''' testando se a função de tempo gasto por batalha está funcionando
-    cavaleiroOuro = cavaleirosDeOuro[0]
-    cavaleirosBronze = cavaleirosDeBronze
-    calc = Batalha()
-    print(calc.tempoGastoPorBatalha(cavaleiroOuro, cavaleirosBronze))
-    print(cavaleirosDeBronze)
-    '''
+    ordem_fixa = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 
-if __name__ == "__main__":
-    main()
+    batalha = BatalhaHeuristica(cavaleirosBronze, cavaleirosOuro, ordem_fixa)
+    tempo, batalhas = batalha.h()
+    result += "-" * 30 + "\n"
+    result += f"Tempo estimado total para vencer todas as batalhas: {tempo:.2f}\n"
+    result += f"Tempo total (batalhas + caminho): {tempo + custo_matriz:.2f} min\n"
+    result += "-" * 30 + "\n"
+    for batalha in batalhas[::-1]: #inverter a ordem para mostrar a primeira casa primeiro
+        result += f"Casa: {batalha['casa']}\n"
+        result += f"Cavaleiros: {', '.join(batalha['cavaleiros'])}\n"
+        result += f"Tempo da batalha: {batalha['tempo_batalha']:.2f}\n"
+        result += "-" * 30 + "\n"
+
+    result += "\n"
+    result += f"Tempo de busca A* -> {custo_matriz} min\n"
+
+    return result, paths
