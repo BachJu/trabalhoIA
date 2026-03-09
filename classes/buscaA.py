@@ -1,8 +1,9 @@
 import heapq
 import csv
+import os
 
 #valor global para o caminho do arquivo matriz.csv
-CAMINHO_ARQ = r'.\csv\matriz.csv'
+CAMINHO_ARQ = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'csv', 'matriz.csv')
 
 def carregar_matriz():
     #matriz vazia para guardar o arquivo csv
@@ -117,13 +118,15 @@ def reconstruir_caminho(caminho_percorrido, atual):
     #retornamos o caminho invertido
     return caminho[::-1]
 
-def calculo_rotas(matriz, casas_lista, inicio, fim) -> int:
+def calculo_rotas(matriz, casas_lista, inicio, fim) -> tuple[int, list]:
     #inicializando variável para guardar o total do custo do caminho
     total_custo = 0
     #ordenando a lista pelo índice dos números das casas dos cavaleiros de ouro
     casas_lista.sort(key=lambda x: x[2])
     #iniciamos na posição de início
     inicio_atual = inicio
+    #lista para armazenar todos os caminhos
+    all_paths = []
 
     #iteração no vetor de casas
     for casa in casas_lista:
@@ -134,9 +137,7 @@ def calculo_rotas(matriz, casas_lista, inicio, fim) -> int:
 
         #caso seja possível encontrar um caminho, somamos seu custo ao custo total do algoritmo
         if caminho:
-            #Para fins de visualização do caminho, remova do comentário
-            #print(f"Caminho encontrado.\n Custo: {custo_caminho}")
-            #print(" -> ".join(map(str, caminho)))
+            all_paths.append(caminho)
             total_custo +=custo_caminho
         else:
             raise ValueError("Impossível encontrar um caminho.")
@@ -148,13 +149,10 @@ def calculo_rotas(matriz, casas_lista, inicio, fim) -> int:
     caminho, custo_caminho = busca_a(matriz, inicio_atual, destino_atual)
 
     if caminho:
-        #Para fins de visualização do caminho, remova do comentário
-        #print(f"Caminho encontrado.\n Custo: {custo_caminho}")
-        #print(" -> ".join(map(str, caminho)))
+        all_paths.append(caminho)
         total_custo +=custo_caminho
-        #print(f"O algoritmo de busca A* gastou no total: {total_custo}")
     else:
             raise ValueError("Impossível encontrar um caminho.")
     
-    #retorno do total gasto no algoritmo
-    return total_custo
+    #retorno do total gasto no algoritmo e a lista de caminhos
+    return total_custo, all_paths
